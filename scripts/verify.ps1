@@ -61,3 +61,9 @@ foreach ($pathPattern in $knownPaths) {
 mix test
 
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-harbor-move-engine-detail.ps1
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-harbor-move-engine-properties.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-harbor-move-engine-golden.ps1
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
