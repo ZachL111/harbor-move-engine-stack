@@ -1,68 +1,40 @@
 # harbor-move-engine-stack
 
-`harbor-move-engine-stack` packages a practical chess and game engines exercise in Elixir. The emphasis is on deterministic behavior, a small public API, and examples that explain the tradeoffs.
+`harbor-move-engine-stack` keeps a focused Elixir implementation around chess and game engines. The project goal is to build an Elixir toolkit that studies engine behavior through windowed input fixtures, with late-data behavior checks and explicit failure cases.
 
-## How I Read Harbor Move Engine Stack
+## Why It Exists
 
-The useful thing to inspect here is how the same score rule is represented in code, metadata, and examples. If those three pieces disagree, the audit script should make the drift visible.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## Problem Shape
+## Harbor Move Engine Stack Review Notes
 
-This is not a wrapper around a service. It is a self-contained project that shows how the model behaves when demand, capacity, latency, risk, and weight move in different directions.
+For a quick review, compare `search width` with `move ordering` before reading the middle cases.
 
-## Repository Map
+## Features
 
-- `lib`: library code
-- `test`: language test directory
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
+- `fixtures/domain_review.csv` adds cases for position pressure and move ordering.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/harbor-move-engine-walkthrough.md` walks through the case spread.
+- The Elixir code includes a review path for `search width` and `move ordering`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Main Behaviors
+## Architecture Notes
 
-- Includes extended examples for turn flow, including `recovery` and `degraded`.
-- Documents search limits tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-- Adds a repository audit script that checks structure before running the language verifier.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `position pressure`, `move ordering`, `search width`, and `endgame risk`.
 
-## Internal Model
+The Elixir addition stays small enough to inspect in one sitting.
 
-The interesting part is the boundary between accepted and reviewed scenarios. Extended examples sit near that boundary so future edits can show whether the model became more permissive or more cautious. The Elixir project uses Mix and ExUnit with clear data maps for each scenario.
-
-## Run It Locally
-
-The only required setup is the local Elixir toolchain. After cloning, stay in the repo root so fixture paths resolve correctly.
-
-## Scenario Walkthrough
-
-`examples/extended_cases.csv` adds six named cases. I kept the names plain so failures are easy to read in a terminal: baseline, pressure, surge, degraded, recovery, and boundary.
-
-## How To Run It
+## Usage
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Tests
 
-## Validation
+The same command runs the local verification path. The highest-scoring domain case is `edge` at 215, which lands in `ship`. The most cautious case is `stress` at 164, which lands in `ship`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Limitations And Roadmap
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Follow-Up Work
-
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add one more chess and game engines fixture that focuses on a malformed or borderline input.
-
-## Known Edges
-
-The scoring model is simple by design. More domain-specific behavior should be added through explicit adapters or extra fixture classes rather than hidden constants.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.

@@ -1,0 +1,73 @@
+{
+  "repo": "harbor-move-engine-stack",
+  "language": "Elixir",
+  "category": "Chess and game engines",
+  "goal": "Build an Elixir toolkit that studies engine behavior through windowed input fixtures, with late-data behavior checks and explicit failure cases.",
+  "review_model": {
+    "terms": [
+      "position pressure",
+      "move ordering",
+      "search width",
+      "endgame risk"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "position pressure",
+      "signal": 80,
+      "slack": 33,
+      "drag": 28,
+      "confidence": 94,
+      "score": 203,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "move ordering",
+      "signal": 73,
+      "slack": 29,
+      "drag": 31,
+      "confidence": 82,
+      "score": 164,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "search width",
+      "signal": 80,
+      "slack": 27,
+      "drag": 17,
+      "confidence": 79,
+      "score": 215,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "endgame risk",
+      "signal": 63,
+      "slack": 35,
+      "drag": 13,
+      "confidence": 91,
+      "score": 213,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "position pressure",
+      "signal": 74,
+      "slack": 47,
+      "drag": 19,
+      "confidence": 56,
+      "score": 194,
+      "lane": "ship"
+    }
+  ]
+}
